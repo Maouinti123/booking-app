@@ -5,7 +5,7 @@ const Banner = () => {
   return (
     <>
         <div className='banner'>
-            <h1 className='banner_title'> Discover and Book Hotels | Just Dream with Us </h1>
+            <h1 className='banner_title'> Fill the form to Reserve </h1>
         </div>
     
     </>

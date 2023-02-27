@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { CiEdit } from "react-icons/ci";
+import { AiFillDelete } from "react-icons/ai";
 import "./home.css";
 
 const Home = () => {
@@ -24,7 +26,6 @@ const Home = () => {
     setEmail("");
     setBookingType("");
   };
-
 
   const handleEdit = (id) => {
     const bookingToEdit = bookings.find((booking) => booking.idNumber === id);
@@ -84,7 +85,7 @@ const Home = () => {
           </select>
         </label>
         <button className="booking-form__button" type="submit">
-          Submit
+          Add Reservation
         </button>
       </form>
 
@@ -93,13 +94,15 @@ const Home = () => {
         <ul className="booking-list__items">
           {bookings.map((booking) => (
             <li key={booking.idNumber}>
-              <div>First Name: {booking.firstName}</div>
-              <div>Last Name: {booking.lastName}</div>
-              <div>Email: {booking.email}</div>
-              <div>ID Number: {booking.idNumber}</div>
-              <div>Type of Booking: {booking.bookingType}</div>
-			  <div onClick={() => handleDelete(booking.idNumber)}>Delete</div>
-			  <div onClick={() => handleEdit(booking.idNumber)}>Edit</div>
+              <p>First Name: {booking.firstName}</p>
+              <p>Last Name: {booking.lastName}</p>
+              <p>Email: {booking.email}</p>
+              <p>ID Number: {booking.idNumber}</p>
+              <p>Type of Booking: {booking.bookingType}</p>
+              <div className="booking-list__icons">
+                <CiEdit onClick={() => handleEdit(booking.idNumber)} />
+                <AiFillDelete onClick={() => handleDelete(booking.idNumber)} />
+              </div>
             </li>
           ))}
         </ul>
