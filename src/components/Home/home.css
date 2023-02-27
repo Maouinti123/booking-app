@@ -93,3 +93,59 @@
     font-weight: 600;
     text-transform: uppercase;
 }
+
+/* 
+Ola Css */
+
+.booking-form {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    gap: 2px;
+  }
+  
+  .booking-form__label {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  
+  .booking-form__input, .booking-form__select {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    margin-top: 5px;
+  }
+  
+  .booking-form__button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+  
+  .booking-form__button:hover {
+    background-color: #0062cc;
+  }
+  
+  .booking-list__items {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
+  }
+  
+  .booking-list__items li {
+    list-style: none;
+  }
+  
