@@ -52,6 +52,10 @@ const Home = () => {
           </button>
         </div>
       </div>
+
+	  <br/>
+
+	  <center>{city}</center>
       {/* <div className="search_parms_container">
         <div className="search_parms">
           <div className="search_parms_details">
