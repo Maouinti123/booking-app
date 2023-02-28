@@ -1,96 +1,114 @@
-import axios from 'axios';
-import React, {useState} from 'react';
+import React, { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+import { CiEdit } from "react-icons/ci";
+import { AiFillDelete } from "react-icons/ai";
 import "./home.css";
 
-
 const Home = () => {
-	const [searchCity, setSearchCity] = useState(null);
-	const [city, setCity] = useState(null);
-	const [checkIn, setCheckIn] = useState(null);
-	const [checkOut, setCheckOut] = useState(null);
-	const [guests, setGuests] = useState(null);
-	const [hotels, setHotels] = useState(null);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [bookingType, setBookingType] = useState("");
+  const [bookings, setBookings] = useState([]);
 
-	const getDestination = async () => {
-		try {
-			const res = await axios.get('api/city/', {
-				params: {searchCity} ,
-			});
-			const {data} = res;
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const newBooking = {
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      idNumber: uuidv4(),
+      bookingType: bookingType,
+    };
+    setBookings([...bookings, newBooking]);
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setBookingType("");
+  };
 
-			setCity(data.suggestions[0].entities[0].destinationId);
-		} catch (error) {
-			console.log(error.message);
-		}
-	};
+  const handleEdit = (id) => {
+    const bookingToEdit = bookings.find((booking) => booking.idNumber === id);
+    setFirstName(bookingToEdit.firstName);
+    setLastName(bookingToEdit.lastName);
+    setEmail(bookingToEdit.email);
+    setBookingType(bookingToEdit.bookingType);
+    setBookings(bookings.filter((booking) => booking.idNumber !== id));
+  };
 
-	const getHotels = async () => {
-		try {
-			const res = await axios.get('api/hotels/', {
-				params: {city, checkIn, checkOut, guests}
-			});
-			const {data} = res;
-			setHotels(data.data.body);
-		} catch (error) {
-			console.log(error);
-		}
-	};
+  const handleDelete = (id) => {
+    setBookings(bookings.filter((booking) => booking.idNumber !== id));
+  };
+
   return (
-    <div>
-      	<div className='search_box'>
-			<input
-				className='input_search'
-				type="text"
-				placeholder="Enter your destination city"
-				onChange={e => {
-					setCity(null);
-					setSearchCity(e.target.value);
-				}}
-			/>
-			<div className='search_btn'>
-				<button 
-					className='search_btn_spec'
-					onClick={() => getDestination()}
-				>
-					Search
-				</button>
-			</div>
-    	</div>
-		<div className='search_parms_container'>
-			<div className='search_parms'>
-				<div className='search_parms_details'>
-					<label for="check-in" className='label_content'> Check-in </label>
-					<input id="startDate" type="date"  onChange={e => setCheckIn(e.target.value)} />
-				</div>
-				<div className='search_parms_details'>
-					<label for="check-out" className='label_content'> Check-out </label>
-					<input id="check-out" type="date" onChange={e => setCheckOut(e.target.value)} />
-				</div>
-				<div className='search_parms_details'>
-					<label for="guests" className='label_content'> Guests </label>
-					<input
-						id="guests"
-						type="number"
-						placeholder="Total guests"
-						onChange={e => setGuests(e.target.value)}
-					/>
-				</div>
-				<div className='search_btn'>
-					<button
-						className='search_btn_spec' 
-						type="submit" 
-						onClick={() => getHotels()}
-					>
-						Find Hotels
-					</button>
-				</div>
-			</div>
-		</div>
-  		
-	</div>
+    <>
+      <form className="booking-form" onSubmit={handleSubmit}>
+        <label className="booking-form__label">
+          First Name:
+          <input
+            className="booking-form__input"
+            type="text"
+            value={firstName}
+            onChange={(event) => setFirstName(event.target.value)}
+          />
+        </label>
+        <label className="booking-form__label">
+          Last Name:
+          <input
+            className="booking-form__input"
+            type="text"
+            value={lastName}
+            onChange={(event) => setLastName(event.target.value)}
+          />
+        </label>
+        <label className="booking-form__label">
+          Email:
+          <input
+            className="booking-form__input"
+            type="email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+          />
+        </label>
 
-    
-  )
-}
+        <label className="booking-form__label">
+          Type of Booking:
+          <select
+            className="booking-form__select"
+            value={bookingType}
+            onChange={(event) => setBookingType(event.target.value)}
+          >
+            <option value="">Select a booking type</option>
+            <option value="flight">Flight</option>
+            <option value="hotel">Hotel</option>
+            <option value="car rental">Car Rental</option>
+          </select>
+        </label>
+        <button className="booking-form__button" type="submit">
+          Add Reservation
+        </button>
+      </form>
 
-export default Home
+      <div className="booking-list">
+        <h2>Bookings:</h2>
+        <ul className="booking-list__items">
+          {bookings.map((booking) => (
+            <li key={booking.idNumber}>
+              <p>First Name: {booking.firstName}</p>
+              <p>Last Name: {booking.lastName}</p>
+              <p>Email: {booking.email}</p>
+              <p>ID Number: {booking.idNumber}</p>
+              <p>Type of Booking: {booking.bookingType}</p>
+              <div className="booking-list__icons">
+                <CiEdit onClick={() => handleEdit(booking.idNumber)} />
+                <AiFillDelete onClick={() => handleDelete(booking.idNumber)} />
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </>
+  );
+};
+
+export default Home;
